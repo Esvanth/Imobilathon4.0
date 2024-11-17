@@ -1,0 +1,15 @@
+const statusElement = document.getElementById("status");
+const logDisplay = document.getElementById("log-display");
+
+// Simulate real-time updates from AI
+setInterval(() => {
+    fetch("http://localhost:5000/hazard-status")
+        .then((res) => res.json())
+        .then((data) => {
+            statusElement.textContent = data.status;
+            logDisplay.value += `${new Date().toLocaleTimeString()} - ${data.log}\n`;
+        })
+        .catch(() => {
+            statusElement.textContent = "Error fetching data.";
+        });
+}, 1000);

@@ -1,0 +1,7 @@
+Host Flask API on localhost:5000.
+
+Serve the HTML dashboard through a local HTTP server.
+
+Integrate Unity simulation for AR/VR training.
+
+Store logs using the SQLite database.

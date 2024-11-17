@@ -1,0 +1,37 @@
+import cv2
+import tensorflow as tf
+import numpy as np
+
+# Load pre-trained TensorFlow model
+model = tf.keras.models.load_model('hazard_detection_model.h5')
+
+# Load labels
+with open('labels.txt', 'r') as f:
+    labels = f.read().splitlines()
+
+# Start video capture
+cap = cv2.VideoCapture(0)
+
+def detect_hazards(frame):
+    img = cv2.resize(frame, (224, 224)) / 255.0
+    img = np.expand_dims(img, axis=0)
+    predictions = model.predict(img)
+    label_idx = np.argmax(predictions)
+    confidence = predictions[0][label_idx]
+    return labels[label_idx], confidence
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    label, confidence = detect_hazards(frame)
+    if confidence > 0.8:  # Threshold for hazard detection
+        cv2.putText(frame, f"ALERT: {label}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+    cv2.imshow("Hazard Detection", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()

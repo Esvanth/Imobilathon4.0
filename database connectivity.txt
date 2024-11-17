@@ -1,0 +1,16 @@
+import sqlite3
+
+def log_hazard_data(status, log):
+    conn = sqlite3.connect('hazard_logs.db')
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            status TEXT,
+            log TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cursor.execute("INSERT INTO logs (status, log) VALUES (?, ?)", (status, log))
+    conn.commit()
+    conn.close()

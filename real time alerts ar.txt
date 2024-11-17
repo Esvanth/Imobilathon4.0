@@ -1,0 +1,27 @@
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+
+public class ARHazardAlert : MonoBehaviour
+{
+    public GameObject alertPrefab; // Assign alert UI prefab
+
+    void Update()
+    {
+        if (HazardDetected()) // Placeholder function for hazard detection
+        {
+            DisplayAlert(new Vector3(0, 0, 2)); // Example position for the alert
+        }
+    }
+
+    void DisplayAlert(Vector3 position)
+    {
+        Instantiate(alertPrefab, position, Quaternion.identity);
+        Debug.Log("AR Hazard Alert displayed.");
+    }
+
+    bool HazardDetected()
+    {
+        // Integrate with AI hazard detection
+        return Random.Range(0, 100) > 95; // Simulated hazard detection
+    }
+}
